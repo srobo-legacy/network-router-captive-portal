@@ -1,0 +1,17 @@
+.TH SR_PORTAL_STATUS 1 "JANUARY 2012" "SR Router" "Management Utilities"
+.SH NAME 
+sr_portal_status \- Show the status of a MAC on the portal
+.SH SYNOPSIS
+.B sr_portal_status 
+.I mac
+.SH DESCRIPTION
+Given a mac address on the command line, show the status of it with regard to
+the various policies in place on the network.  This command does not modify
+any access rights in place.
+.SH OPTIONS
+.IP mac
+The MAC address to look up in the policy tables.
+.SH AUTHOR
+Chris Malton <cmalton at studentrobotics dot org>
+.SH SEE ALSO
+.BR iptables (8)

@@ -1,0 +1,23 @@
+#! /bin/bash
+
+# Add a user to the authenticated table if they aren't already in it.
+
+case "$2" in
+	"video"|"compnet"|"management"|"staff")
+		found=`iptables -xvnL is_authenticated | egrep -i "MAC $1" | grep -E "${2}_access"`
+		result=$?
+		if [ $result -eq 0 ]; then
+			exit 0
+		fi
+		iptables -A is_authenticated -m mac --mac-source "$1" -j ${2}_access
+		;;
+	"internet")
+		found=`iptables -t nat -xvnL is_authenticated | egrep -i "MAC $1"`
+		result=$?
+		if [ $result -eq 0 ]; then
+			exit 0
+		fi
+		iptables -t nat -A is_authenticated -m mac --mac-source "$1" -j ACCEPT
+		iptables -A is_authenticated -m mac --mac-source "$1" -j web_access
+		;;
+esac

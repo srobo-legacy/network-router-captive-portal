@@ -1,0 +1,5 @@
+#! /bin/sh
+set -e
+#DEBCONF#
+
+/usr/share/libsrsso/mkkeypair.sh /etc/sr-captive-portal/key

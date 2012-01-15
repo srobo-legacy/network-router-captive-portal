@@ -1,0 +1,13 @@
+Source: sr-router-captive-portal
+Section: web
+Priority: extra
+Maintainer: Chris Malton <cmalton@studentrobotics.org>
+Build-Depends: cdbs (>= 0.4.23-1.1), debhelper (>= 4.2.0), config-package-dev (>= 4.5~)
+Standards-Version: 3.8.0
+
+Package: sr-router-captive-portal
+Architecture: all
+Depends: php5-cli, apache2, libsrsso-client
+Description: Student Robotics Captive Portal (using SSO)
+ This package installs the Student Robotics captive portal system, which
+ utilises an SR single-sign-on provider.

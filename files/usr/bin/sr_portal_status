@@ -1,0 +1,43 @@
+#! /bin/bash
+
+# Get the status of a MAC
+has_access(){
+	found=`iptables -xvnL is_authenticated | egrep -i "MAC $1" | grep -E "${2}_access"`
+	result=$?
+	return $result
+}
+
+print_user_for_mac(){
+	# Get the user for a MAC
+	cat <<EOF | php -q
+<?php
+	# PHP Embedded in a shell script - EURGH!
+	\$lockHandle = fopen("/tmp/portal-macs.lock", "a"); //Open a lock file.
+	flock(\$lockHandle, LOCK_EX);	//Lock the file
+	ftruncate(\$lockHandle, 0);	//Empty the file
+	fwrite(\$lockHandle, "Local user (sr_portal_status) locked portal-macs"); //Store a useful message about who locked it.
+
+	//Now do stuff with portal-macs
+	\$macUsers = unserialize(file_get_contents("/tmp/portal-macs"));
+	chmod("/tmp/portal-macs", 0600);
+	echo \$macUsers[$1];
+
+	//Close the lock file off
+	fclose(\$lockHandle);
+	//Delete the lock
+	unlink("/tmp/portal-macs.lock");
+?>
+EOF
+}
+
+echo "Details for MAC: $1"
+echo "----------------------------------"
+echo -n "Username: "
+print_user_for_mac $1
+
+echo "Access levels:"
+if has_access "$1" "staff"; then echo -e "\tStaff"; fi
+if has_access "$1" "compnet"; then echo -e "\tCompetition network"; fi
+if has_access "$1" "management"; then echo -e "\tNetwork management"; fi
+if has_access "$1" "video"; then echo -e "\tVideo network"; fi
+if has_access "$1" "web"; then echo -e "\tInternet"; fi

@@ -1,0 +1,5 @@
+sr-router-captive-portal (0.1) squeeze; urgency=low
+  * Initial deployment build of the captive portal using SR-SSO
+
+ -- Chris Malton <cmalton@studentrobotics.org>  Sat, 14 Jan 2012 12:13:00 +0000
+
