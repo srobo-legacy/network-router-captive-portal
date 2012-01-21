@@ -21,7 +21,10 @@ print_user_for_mac(){
 	//Now do stuff with portal-macs
 	\$macUsers = unserialize(file_get_contents("/tmp/portal-macs"));
 	chmod("/tmp/portal-macs", 0600);
-	echo \$macUsers["$1"] . "\n";
+	if(isset(\$macUsers["$1"])){
+		echo \$macUsers["$1"] . "\n";
+	}else
+		echo "Guest\n";
 
 	//Close the lock file off
 	fclose(\$lockHandle);
