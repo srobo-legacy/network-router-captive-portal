@@ -10,7 +10,7 @@ function IPtoMAC($ip){
 }
 
 function GetLocalGroups($username){
-	$groups = explode("\n", shell_exec("id " . $username . " 2>/dev/null | awk '{print $3;}' | awk -F= '{print $2;}' | awk -F, '{out=""; for(i=0; i<=NF; i++){print $i;}}'"));
+	$groups = explode("\n", shell_exec("id " . $username . " 2>/dev/null | awk '{print $3;}' | awk -F= '{print $2;}' | awk -F, '{out=\"\"; for(i=0; i<=NF; i++){print $i;}}'"));
 	$groupNames = array();
 	foreach($groups as $group){
 		$groupName = substr($group, strpos($group, "(") + 1);
@@ -39,7 +39,7 @@ function UpdateMACList($mac, $user){
 }
 
 define("SR_SSO_URL", "https://www.studentrobotics.org/~cmalton/sso/server/");
-define("SSO_PRIVKEY", file_get_contents("/etc/sr-captive-portal/key.priv"));
+define("SSO_PRIVKEY", file_get_contents("/etc/sr-captive-portal/key"));
 
 session_start();
 
@@ -53,7 +53,7 @@ if(!$mac){
 	exit();
 }
 
-$isAlreadyAuthed = trim(shell_exec("/usr/bin/sr_portal_mac_info $mac | grep -E '^Username:'"));
+$isAlreadyAuthed = trim(shell_exec("sudo /usr/bin/sr_portal_status $mac | grep -E '^Username:'"));
 if($isAlreadyAuthed != "Guest"){
 	header("Location: " . $_GET["from"]);
 }
@@ -66,7 +66,7 @@ SSOClient::DoSSO();
 $UserInfo = SSOClient::GetData();
 if(in_array("mentors", $UserInfo->groups)){
 	// User is a blueshirt, permit access to staff and competitor
-	shell_exec("/usr/bin/sr_portal_grant $mac staff");
+	shell_exec("sudo /usr/bin/sr_portal_grant $mac staff");
 }
 
 //Look up the local groups
@@ -75,20 +75,22 @@ $LocalGroups = GetLocalGroups($UserInfo->username);
 // Are they a sysadmin
 if(in_array("sr-sysadmins", $LocalGroups)){
 	// User is a sysadmin, permit access to staff and competitor
-	shell_exec("/usr/bin/sr_portal_grant $mac management");
+	shell_exec("sudo /usr/bin/sr_portal_grant $mac management");
 }
 // Are they a video admin
 if(in_array("sr-videoadmins", $LocalGroups)){
 	// User is a sysadmin, permit access to staff and competitor
-	shell_exec("/usr/bin/sr_portal_grant $mac video");
+	shell_exec("sudo /usr/bin/sr_portal_grant $mac video");
 }
 // Are they a competition network admin
 if(in_array("sr-compnetadmins", $LocalGroups)){
 	// User is a sysadmin, permit access to staff and competitor
-	shell_exec("/usr/bin/sr_portal_grant $mac compnet");
+	shell_exec("sudo /usr/bin/sr_portal_grant $mac compnet");
 }
 
 // Allow everyone to access the internet
-shell_exec("/usr/bin/sr_portal_grant $mac internet");
+shell_exec("sudo /usr/bin/sr_portal_grant $mac internet");
+
+UpdateMACList($mac, $UserInfo->username);
 
 ?>
