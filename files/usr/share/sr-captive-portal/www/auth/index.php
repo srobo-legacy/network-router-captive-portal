@@ -53,9 +53,10 @@ if(!$mac){
 	exit();
 }
 
-$isAlreadyAuthed = trim(shell_exec("sudo /usr/bin/sr_portal_status $mac | grep -E '^Username:'"));
+$isAlreadyAuthed = trim(shell_exec("sudo /usr/bin/sr_portal_status $mac | grep -E '^Username:' | awk '{print $2;}'"));
 if($isAlreadyAuthed != "Guest"){
 	header("Location: " . $_GET["from"]);
+	exit();
 }
 
 #### IF WE GET TO THIS POINT THE CLIENT IS NOT AUTHENTICATED AT ALL ####
@@ -70,7 +71,7 @@ if(in_array("mentors", $UserInfo->groups)){
 }
 
 //Look up the local groups
-$LocalGroups = GetLocalGroups($UserInfo->username);
+$LocalGroups = GetLocalGroups("sys-" . $UserInfo->username);
 
 // Are they a sysadmin
 if(in_array("sr-sysadmins", $LocalGroups)){
