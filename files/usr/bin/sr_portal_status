@@ -12,6 +12,7 @@ print_user_for_mac(){
 	cat <<EOF | php -q
 <?php
 	# PHP Embedded in a shell script - EURGH!
+	if(!file_exists("/tmp/portal-macs")) die("Guest\n");
 	\$lockHandle = fopen("/tmp/portal-macs.lock", "a"); //Open a lock file.
 	flock(\$lockHandle, LOCK_EX);	//Lock the file
 	ftruncate(\$lockHandle, 0);	//Empty the file
@@ -20,7 +21,7 @@ print_user_for_mac(){
 	//Now do stuff with portal-macs
 	\$macUsers = unserialize(file_get_contents("/tmp/portal-macs"));
 	chmod("/tmp/portal-macs", 0600);
-	echo \$macUsers[$1];
+	echo \$macUsers["$1"] . "\n";
 
 	//Close the lock file off
 	fclose(\$lockHandle);
@@ -29,6 +30,11 @@ print_user_for_mac(){
 ?>
 EOF
 }
+
+if [ $# -lt 1 ]; then
+	echo "Usage: $0 <MAC>"
+	echo "For more details see sr_portal_status (5)"
+fi
 
 echo "Details for MAC: $1"
 echo "----------------------------------"
