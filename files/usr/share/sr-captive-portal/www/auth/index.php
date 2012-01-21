@@ -1,5 +1,7 @@
 <?php
 
+define("TEAM_PREFIX", "team-");
+
 require_once("SSOClient.php");
 
 function IPtoMAC($ip){
@@ -96,6 +98,22 @@ if(in_array("sr-compnetadmins", $LocalGroups)){
 
 // Allow everyone to access the internet
 shell_exec("sudo /usr/bin/sr_portal_grant $mac internet");
+
+// Are they on the unregistered competitor VLAN
+if( substr($ip, 0, 9) == "172.19.0." ){
+	// They are on the unregistered competitor VLAN
+	// Register them on the team DHCP subnet
+
+	foreach($UserInfo->groups as $group){
+		if(preg_match("/^" . TEAM_PREFIX . "/", $group)){
+			// Team is $group.
+			$teamID = $group;
+			// TODO: Find team ID from database.
+			// TODO: If team ID is found, use that subnet ID for the team and add MAC to it.
+			// TODO: If team ID is not found, generate a new subnet for the team and add MAC to it.
+		}
+	}
+}
 
 UpdateMACList($mac, $UserInfo->username);
 
