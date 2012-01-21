@@ -46,4 +46,4 @@ if has_access "$1" "staff"; then echo -e "\tStaff"; fi
 if has_access "$1" "compnet"; then echo -e "\tCompetition network"; fi
 if has_access "$1" "management"; then echo -e "\tNetwork management"; fi
 if has_access "$1" "video"; then echo -e "\tVideo network"; fi
-if has_access "$1" "web"; then echo -e "\tInternet"; fi
+if has_access "$1" "internet"; then echo -e "\tInternet"; fi
