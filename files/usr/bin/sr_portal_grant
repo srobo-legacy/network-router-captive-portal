@@ -18,6 +18,6 @@ case "$2" in
 			exit 0
 		fi
 		iptables -t nat -A is_authenticated -m mac --mac-source "$1" -j ACCEPT
-		iptables -A is_authenticated -m mac --mac-source "$1" -j web_access
+		iptables -A is_authenticated -m mac --mac-source "$1" -j internet_access
 		;;
 esac
