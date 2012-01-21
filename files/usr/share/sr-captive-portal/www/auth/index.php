@@ -46,7 +46,7 @@ session_start();
 if(isset($_GET["from"])) $_SESSION["originURL"] = $_GET["from"];
 
 $ip = $_SERVER["REMOTE_ADDR"];
-$mac = IPtoMAC($ip);
+$mac = strtolower(IPtoMAC($ip));
 
 if(!$mac){
 	header("Location: no_mac.php");

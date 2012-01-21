@@ -21,8 +21,8 @@ print_user_for_mac(){
 	//Now do stuff with portal-macs
 	\$macUsers = unserialize(file_get_contents("/tmp/portal-macs"));
 	chmod("/tmp/portal-macs", 0600);
-	if(isset(\$macUsers["$1"])){
-		echo \$macUsers["$1"] . "\n";
+	if(isset(\$macUsers[strtolower("$1")])){
+		echo \$macUsers[strtolower("$1")] . "\n";
 	}else
 		echo "Guest\n";
 
