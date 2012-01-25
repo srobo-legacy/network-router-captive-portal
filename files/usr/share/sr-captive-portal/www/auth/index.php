@@ -109,10 +109,34 @@ if( substr($ip, 0, 9) == "172.19.0." ){
 	foreach($UserInfo->groups as $group){
 		if(preg_match("/^" . TEAM_PREFIX . "/", $group)){
 			// Team is $group.
-			$teamID = $group;
-			// TODO: Find team ID from database.
-			// TODO: If team ID is found, use that subnet ID for the team and add MAC to it.
-			// TODO: If team ID is not found, generate a new subnet for the team and add MAC to it.
+			$teamID = substr($group, strlen(TEAM_PREFIX));
+			$lockFile = fopen("/usr/share/sr-captive-portal/data/team-subnet-map.json.lock", "a+");
+			flock($lockFile, LOCK_EX);
+			ftruncate($lockFile, 0);
+			fwrite($lockFile, "Locked by PID " . getmypid());
+			$teamSubnets = json_decode(file_get_contents("/usr/share/sr-captive-portal/data/team-subnet-map.json"), true);
+			$subnetID = -1;
+			$freeSubnet = 1;
+			// Try and find an existing subnet for this team ID.
+			foreach($teamSubnets as $id => $team){
+				if($team == $teamID){
+					$subnetID = $id;
+					break;
+				}
+				if($id <= $freeSubnet) $freeSubnet = $id + 1;
+			}
+			if($subnetID == -1){
+				// Allocate a new subnet
+				$teamSubnets[$freeSubnet] = $teamID;
+				file_put_contents("/usr/share/sr-captive-portal/data/team-subnet-map.json", json_encode($teamSubnets));
+				shell_exec("sudo /usr/bin/sr_dhcp_competitor_register $mac $freeSubnet");
+			}else{
+				shell_exec("sudo /usr/bin/sr_dhcp_competitor_register $mac $subnetID");
+			}
+
+			fclose($lockFile);
+			unlink("/usr/share/sr-captive-portal/data/team-subnet-map.json.lock");
+			break;
 		}
 	}
 }

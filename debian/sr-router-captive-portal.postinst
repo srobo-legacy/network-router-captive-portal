@@ -5,3 +5,6 @@ set -e
 mkdir -p /etc/sr-captive-portal
 # Create key if needed
 if [ ! -f /etc/sr-captive-portal/key ]; then /usr/share/libsrsso/mkkeypair.sh /etc/sr-captive-portal/key; fi
+
+chown www-data /usr/share/sr-captive-portal/data
+
