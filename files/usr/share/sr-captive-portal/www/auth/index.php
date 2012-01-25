@@ -41,8 +41,8 @@ function UpdateMACList($mac, $user){
 	unlink("/tmp/portal-macs.lock");
 }
 
-define("SR_SSO_URL", "https://www.studentrobotics.org/~cmalton/sso/server/");
-define("SSO_PRIVKEY", file_get_contents("/etc/sr-captive-portal/key"));
+$sso_url = "https://www.studentrobotics.org/~cmalton/network-auth/server/";
+$sso_key = file_get_contents("/etc/sr-captive-portal/key");
 
 session_start();
 
@@ -68,10 +68,12 @@ if($isAlreadyAuthed != "Guest"){
 
 #### IF WE GET TO THIS POINT THE CLIENT IS NOT AUTHENTICATED AT ALL ####
 
-//Force a login
-SSOClient::DoSSO();
+$sso = new SSOClient($sso_url, $sso_key);
 
-$UserInfo = SSOClient::GetData();
+//Force a login
+$sso->DoSSO();
+
+$UserInfo = $sso->GetData();
 if(in_array("mentors", $UserInfo->groups)){
 	// User is a blueshirt, permit access to staff and competitor
 	shell_exec("sudo /usr/bin/sr_portal_grant $mac staff");
