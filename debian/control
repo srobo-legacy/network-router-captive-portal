@@ -7,7 +7,7 @@ Standards-Version: 3.8.0
 
 Package: sr-router-captive-portal
 Architecture: all
-Depends: php5-cli, apache2, libsrsso-client, sr-admin-tools-dhcp, sr-admin-tools-dns
+Depends: php5-cli, apache2, libsrnetauth-client, sr-admin-tools-dhcp, sr-admin-tools-dns
 Description: Student Robotics Captive Portal (using SSO)
  This package installs the Student Robotics captive portal system, which
  utilises an SR single-sign-on provider.
