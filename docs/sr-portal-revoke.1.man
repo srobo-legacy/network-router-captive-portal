@@ -1,15 +1,15 @@
-.TH SR_PORTAL_GRANT 1 "JANUARY 2012" "SR Router" "Management Utilities"
+.TH SR_PORTAL_REVOKE 1 "JANUARY 2012" "SR Router" "Management Utilities"
 .SH NAME 
-sr_portal_grant \- Show the status of a MAC on the portal
+sr-portal-revoke \- Revoke access from MAC to areas of the network
 .SH SYNOPSIS
-.B sr_portal_grant 
+.B sr-portal-revoke 
 .I mac
 .I access-rule
 .SH DESCRIPTION
-Grants
+Revokes access from
 .I mac
-access to areas of the network by various access rules.  The default
-access rules available are:
+to areas of the network by various access rules.  The default access rules 
+available are:
 .IP staff
 Currently does nothing.
 .IP compnet
@@ -24,7 +24,7 @@ Access to the video VLAN.
 .IP mac
 The MAC address to look up in the policy tables.
 .IP access-rule
-The access to permit this MAC address.  This must be one of the above
+The access to revoke from this MAC address.  This must be one of the above
 values.
 .SH AUTHOR
 Chris Malton <cmalton at studentrobotics dot org>

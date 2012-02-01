@@ -6,7 +6,7 @@ include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/rules/config-package.mk
 include /usr/share/cdbs/1/rules/divert.mk
 
-DOCS_sr-router-captive-portal = docs/sr_portal_status.1.gz docs/sr_portal_grant.1.gz docs/sr_portal_revoke.1.gz
+DOCS_sr-router-captive-portal = docs/sr-portal-status.1.gz docs/sr-portal-grant.1.gz docs/sr-portal-revoke.1.gz
 
 %.gz: %.man
 	gzip -c $< > $@

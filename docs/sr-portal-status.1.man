@@ -1,8 +1,8 @@
 .TH SR_PORTAL_STATUS 1 "JANUARY 2012" "SR Router" "Management Utilities"
 .SH NAME 
-sr_portal_status \- Show the status of a MAC on the portal
+sr-portal-status \- Show the status of a MAC on the portal
 .SH SYNOPSIS
-.B sr_portal_status 
+.B sr-portal-status 
 .I mac
 .SH DESCRIPTION
 Given a mac address on the command line, show the status of it with regard to

@@ -76,7 +76,7 @@ $sso->DoSSO();
 $UserInfo = $sso->GetData();
 if(in_array("mentors", $UserInfo->groups)){
 	// User is a blueshirt, permit access to staff and competitor
-	shell_exec("sudo /usr/bin/sr_portal_grant $mac staff");
+	shell_exec("sudo /usr/bin/sr-portal-grant $mac staff");
 }
 
 //Look up the local groups
@@ -85,21 +85,21 @@ $LocalGroups = GetLocalGroups("sys-" . $UserInfo->username);
 // Are they a sysadmin
 if(in_array("sr-sysadmins", $LocalGroups)){
 	// User is a sysadmin, permit access to staff and competitor
-	shell_exec("sudo /usr/bin/sr_portal_grant $mac management");
+	shell_exec("sudo /usr/bin/sr-portal-grant $mac management");
 }
 // Are they a video admin
 if(in_array("sr-videoadmins", $LocalGroups)){
 	// User is a sysadmin, permit access to staff and competitor
-	shell_exec("sudo /usr/bin/sr_portal_grant $mac video");
+	shell_exec("sudo /usr/bin/sr-portal-grant $mac video");
 }
 // Are they a competition network admin
 if(in_array("sr-compnetadmins", $LocalGroups)){
 	// User is a sysadmin, permit access to staff and competitor
-	shell_exec("sudo /usr/bin/sr_portal_grant $mac compnet");
+	shell_exec("sudo /usr/bin/sr-portal-grant $mac compnet");
 }
 
 // Allow everyone to access the internet
-shell_exec("sudo /usr/bin/sr_portal_grant $mac internet");
+shell_exec("sudo /usr/bin/sr-portal-grant $mac internet");
 
 // Are they on the unregistered competitor VLAN
 if( substr($ip, 0, 9) == "172.19.0." ){
@@ -129,9 +129,9 @@ if( substr($ip, 0, 9) == "172.19.0." ){
 				// Allocate a new subnet
 				$teamSubnets[$freeSubnet] = $teamID;
 				file_put_contents("/usr/share/sr-captive-portal/data/team-subnet-map.json", json_encode($teamSubnets));
-				shell_exec("sudo /usr/bin/sr_dhcp_competitor_register $mac $freeSubnet");
+				shell_exec("sudo /usr/bin/sr-dhcp-competitor-register $mac $freeSubnet");
 			}else{
-				shell_exec("sudo /usr/bin/sr_dhcp_competitor_register $mac $subnetID");
+				shell_exec("sudo /usr/bin/sr-dhcp-competitor-register $mac $subnetID");
 			}
 
 			fclose($lockFile);

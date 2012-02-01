@@ -1,2 +1,2 @@
 files/usr/share/sr-captive-portal/* /usr/share/sr-captive-portal/
-files/usr/bin/sr_portal_* /usr/bin/
+files/usr/bin/sr-portal-* /usr/bin/

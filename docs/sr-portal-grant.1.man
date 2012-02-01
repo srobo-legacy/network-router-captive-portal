@@ -1,15 +1,15 @@
-.TH SR_PORTAL_REVOKE 1 "JANUARY 2012" "SR Router" "Management Utilities"
+.TH SR_PORTAL_GRANT 1 "JANUARY 2012" "SR Router" "Management Utilities"
 .SH NAME 
-sr_portal_revoke \- Show the status of a MAC on the portal
+sr-portal-grant \- Grant a MAC address access rights on the network.
 .SH SYNOPSIS
-.B sr_portal_revoke 
+.B sr-portal-grant 
 .I mac
 .I access-rule
 .SH DESCRIPTION
-Revokes access from
+Grants
 .I mac
-to areas of the network by various access rules.  The default access rules 
-available are:
+access to areas of the network by various access rules.  The default
+access rules available are:
 .IP staff
 Currently does nothing.
 .IP compnet
