@@ -56,10 +56,10 @@ if(!$mac){
 	exit();
 }
 
-$isAlreadyAuthed = trim(shell_exec("sudo /usr/bin/sr_portal_status $mac | grep -E '^Username:' | awk '{print $2;}'"));
+$isAlreadyAuthed = trim(shell_exec("sudo /usr/bin/sr-portal-status $mac | grep -E '^Username:' | awk '{print $2;}'"));
 if($isAlreadyAuthed != "Guest"){
 	// Make sure they actually do have internet access
-	shell_exec("sudo /usr/bin/sr_portal_grant $mac internet");
+	shell_exec("sudo /usr/bin/sr-portal-grant $mac internet");
 
 	// Take them back where they came from
 	header("Location: " . $_GET["from"]);
