@@ -6,7 +6,8 @@ require_once("SSOClient.php");
 
 function IPtoMAC($ip){
 	//Do an ARP request for it
-	$MAC = trim(shell_exec("ping -c 1 $ip 2>&1 >/dev/null && ( /usr/sbin/arp -n | grep -E '^$ip' | awk '{print $3;}' )"));
+	$MAC = trim(shell_exec("/usr/sbin/arp -n | grep -E '^$ip' | awk '{print $3;}'"));
+	if(!$MAC) $MAC = trim(shell_exec("ping -c 1 $ip 2>&1 >/dev/null && ( /usr/sbin/arp -n | grep -E '^$ip' | awk '{print $3;}' )"));
 	if(!$MAC) return false;
 	return $MAC;
 }
