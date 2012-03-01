@@ -12,15 +12,15 @@ print_user_for_mac(){
 	cat <<EOF | php -q
 <?php
 	# PHP Embedded in a shell script - EURGH!
-	if(!file_exists("/tmp/portal-macs")) die("Guest\n");
-	\$lockHandle = fopen("/tmp/portal-macs.lock", "a"); //Open a lock file.
+	if(!file_exists("/usr/share/sr-captive-portal/data/portal-macs")) die("Guest\n");
+	\$lockHandle = fopen("/usr/share/sr-captive-portal/data/portal-macs.lock", "a"); //Open a lock file.
 	flock(\$lockHandle, LOCK_EX);	//Lock the file
 	ftruncate(\$lockHandle, 0);	//Empty the file
 	fwrite(\$lockHandle, "Local user (sr_portal_status) locked portal-macs"); //Store a useful message about who locked it.
 
 	//Now do stuff with portal-macs
-	\$macUsers = unserialize(file_get_contents("/tmp/portal-macs"));
-	chmod("/tmp/portal-macs", 0600);
+	\$macUsers = unserialize(file_get_contents("/usr/share/sr-captive-portal/data/portal-macs"));
+	chmod("/usr/share/sr-captive-portal/data/portal-macs", 0600);
 	if(isset(\$macUsers[strtolower("$1")])){
 		echo \$macUsers[strtolower("$1")] . "\n";
 	}else
@@ -29,7 +29,7 @@ print_user_for_mac(){
 	//Close the lock file off
 	fclose(\$lockHandle);
 	//Delete the lock
-	unlink("/tmp/portal-macs.lock");
+	unlink("/usr/share/sr-captive-portal/data/portal-macs.lock");
 ?>
 EOF
 }

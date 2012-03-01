@@ -25,21 +25,21 @@ function GetLocalGroups($username){
 }
 
 function UpdateMACList($mac, $user){
-	$lockHandle = fopen("/tmp/portal-macs.lock", "a"); //Open a lock file.
+	$lockHandle = fopen("/usr/share/sr-captive-portal/data/portal-macs.lock", "a"); //Open a lock file.
 	flock($lockHandle, LOCK_EX);	//Lock the file
 	ftruncate($lockHandle, 0);	//Empty the file
 	fwrite($lockHandle, $_SERVER["REMOTE_ADDR"] . " locked portal-macs"); //Store a useful message about who locked it.
 
 	//Now do stuff with portal-macs
-	$macUsers = unserialize(file_get_contents("/tmp/portal-macs"));
-	chmod("/tmp/portal-macs", 0600);
+	$macUsers = unserialize(file_get_contents("/usr/share/sr-captive-portal/data/portal-macs"));
+	chmod("/usr/share/sr-captive-portal/data/portal-macs", 0600);
 	$macUsers[$mac] = $user;
 
-	file_put_contents("/tmp/portal-macs", serialize($macUsers));
+	file_put_contents("/usr/share/sr-captive-portal/data/portal-macs", serialize($macUsers));
 	//Close the lock file off
 	fclose($lockHandle);
 	//Delete the lock
-	unlink("/tmp/portal-macs.lock");
+	unlink("/usr/share/sr-captive-portal/data/portal-macs.lock");
 }
 
 $sso_url = "https://www.studentrobotics.org/~cmalton/network-auth/server/";
