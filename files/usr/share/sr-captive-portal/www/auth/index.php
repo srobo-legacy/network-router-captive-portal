@@ -59,7 +59,7 @@ if(!$mac){
 
 $isAlreadyAuthed = trim(shell_exec("sudo /usr/bin/sr-portal-status $mac | grep -E '^Username:' | awk '{print $2;}'"));
 if($isAlreadyAuthed != "Guest"){
-	// Make sure they actually do have internet access
+	// Make sure they actually do at least have internet access
 	shell_exec("sudo /usr/bin/sr-portal-grant $mac internet");
 
 	// Take them back where they came from
@@ -85,17 +85,17 @@ $LocalGroups = GetLocalGroups("sys-" . $UserInfo->username);
 
 // Are they a sysadmin
 if(in_array("sr-sysadmins", $LocalGroups)){
-	// User is a sysadmin, permit access to staff and competitor
+	// User is a sysadmin, permit access to management
 	shell_exec("sudo /usr/bin/sr-portal-grant $mac management");
 }
 // Are they a video admin
 if(in_array("sr-videoadmins", $LocalGroups)){
-	// User is a sysadmin, permit access to staff and competitor
+	// User is a video admin, permit access to video
 	shell_exec("sudo /usr/bin/sr-portal-grant $mac video");
 }
 // Are they a competition network admin
 if(in_array("sr-compnetadmins", $LocalGroups)){
-	// User is a sysadmin, permit access to staff and competitor
+	// User is a comp net admin, permit access to competition services.
 	shell_exec("sudo /usr/bin/sr-portal-grant $mac compnet");
 }
 
