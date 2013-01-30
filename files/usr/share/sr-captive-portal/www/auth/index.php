@@ -45,10 +45,6 @@ function UpdateMACList($mac, $user){
 $sso_url = "https://www.studentrobotics.org/~cmalton/network-auth/server/";
 $sso_key = file_get_contents("/etc/sr-captive-portal/key");
 
-session_start();
-
-if(isset($_GET["from"])) $_SESSION["originURL"] = $_GET["from"];
-
 $ip = $_SERVER["REMOTE_ADDR"];
 $mac = strtolower(IPtoMAC($ip));
 
@@ -144,6 +140,6 @@ if( substr($ip, 0, 9) == "172.19.0." ){
 
 UpdateMACList($mac, $UserInfo->username);
 
-header("Location: " . $_SESSION["originURL"]);
+header("Location: " . $UserInfo->originURL);
 
 ?>
