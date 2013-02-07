@@ -42,7 +42,7 @@ function UpdateMACList($mac, $user){
 	unlink("/usr/share/sr-captive-portal/data/portal-macs.lock");
 }
 
-$sso_url = "https://www.studentrobotics.org/~cmalton/network-auth/server/";
+$sso_url = "https://auth.net.studentrobotics.org/";
 $sso_key = file_get_contents("/etc/sr-captive-portal/key");
 
 $ip = $_SERVER["REMOTE_ADDR"];
