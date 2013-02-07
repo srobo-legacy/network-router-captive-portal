@@ -68,9 +68,8 @@ if($isAlreadyAuthed != "Guest"){
 $sso = new SSOClient($sso_url, $sso_key);
 
 //Force a login
-$sso->DoSSO();
+$UserInfo = $sso->DoSSO();
 
-$UserInfo = $sso->GetData();
 if(in_array("mentors", $UserInfo->groups)){
 	// User is a blueshirt, permit access to staff and competitor
 	shell_exec("sudo /usr/bin/sr-portal-grant $mac staff");
