@@ -42,8 +42,9 @@ function UpdateMACList($mac, $user){
 	unlink("/usr/share/sr-captive-portal/data/portal-macs.lock");
 }
 
-$sso_url = "https://auth.net.studentrobotics.org/";
+$sso_url = "https://www.studentrobotics.org/external-auth/";
 $sso_key = file_get_contents("/etc/sr-captive-portal/key");
+$sso_pub_key = file_get_contents("/etc/sr-captive-portal/key.pub");
 
 $ip = $_SERVER["REMOTE_ADDR"];
 $mac = strtolower(IPtoMAC($ip));
@@ -65,7 +66,7 @@ if($isAlreadyAuthed != "Guest"){
 
 #### IF WE GET TO THIS POINT THE CLIENT IS NOT AUTHENTICATED AT ALL ####
 
-$sso = new SSOClient($sso_url, $sso_key);
+$sso = new SSOClient($sso_url, $sso_key, $sso_pub_key);
 
 //Force a login
 $UserInfo = $sso->DoSSO();
