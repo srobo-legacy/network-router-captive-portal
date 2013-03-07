@@ -14,7 +14,6 @@ function IPtoMAC($ip){
 
 function GetLocalGroups($username){
 	$groups = explode("\n", shell_exec("id " . $username . " 2>/dev/null | awk '{print $3;}' | awk -F= '{print $2;}' | awk -F, '{out=\"\"; for(i=1; i<=NF; i++){print \$i;}}'"));
-	var_dump($groups);
 	$groupNames = array();
 	foreach($groups as $group){
 		$groupName = substr($group, strpos($group, "(") + 1);
