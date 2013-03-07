@@ -99,6 +99,6 @@ shell_exec("sudo /usr/bin/sr-portal-grant $mac internet");
 
 UpdateMACList($mac, $UserInfo->username);
 
-header("Location: " . $UserInfo->originURL);
+header("Location: " . $_GET["from"]);
 
 ?>
