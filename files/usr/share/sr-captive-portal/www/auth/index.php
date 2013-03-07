@@ -97,46 +97,6 @@ if(in_array("sr-compnetadmins", $LocalGroups)){
 // Allow everyone to access the internet
 shell_exec("sudo /usr/bin/sr-portal-grant $mac internet");
 
-// Are they on the unregistered competitor VLAN
-if( substr($ip, 0, 9) == "172.19.0." ){
-	// They are on the unregistered competitor VLAN
-	// Register them on the team DHCP subnet
-
-	foreach($UserInfo->groups as $group){
-		if(preg_match("/^" . TEAM_PREFIX . "/", $group)){
-			// Team is $group.
-			$teamID = substr($group, strlen(TEAM_PREFIX));
-			$lockFile = fopen("/usr/share/sr-captive-portal/data/team-subnet-map.json.lock", "a+");
-			flock($lockFile, LOCK_EX);
-			ftruncate($lockFile, 0);
-			fwrite($lockFile, "Locked by PID " . getmypid());
-			$teamSubnets = json_decode(file_get_contents("/usr/share/sr-captive-portal/data/team-subnet-map.json"), true);
-			$subnetID = -1;
-			$freeSubnet = 1;
-			// Try and find an existing subnet for this team ID.
-			foreach($teamSubnets as $id => $team){
-				if($team == $teamID){
-					$subnetID = $id;
-					break;
-				}
-				if($id <= $freeSubnet) $freeSubnet = $id + 1;
-			}
-			if($subnetID == -1){
-				// Allocate a new subnet
-				$teamSubnets[$freeSubnet] = $teamID;
-				file_put_contents("/usr/share/sr-captive-portal/data/team-subnet-map.json", json_encode($teamSubnets));
-				shell_exec("sudo /usr/bin/sr-dhcp-competitor-register $mac $freeSubnet");
-			}else{
-				shell_exec("sudo /usr/bin/sr-dhcp-competitor-register $mac $subnetID");
-			}
-
-			fclose($lockFile);
-			unlink("/usr/share/sr-captive-portal/data/team-subnet-map.json.lock");
-			break;
-		}
-	}
-}
-
 UpdateMACList($mac, $UserInfo->username);
 
 header("Location: " . $UserInfo->originURL);
